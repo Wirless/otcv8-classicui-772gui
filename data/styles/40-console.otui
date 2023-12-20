@@ -1,0 +1,190 @@
+ConsoleLabel < UITextEdit
+  font: verdana-11px-antialised
+  height: 14
+  color: yellow
+  margin-left: 2
+  text-wrap: true
+  text-auto-resize: true
+  selection-color: #111416
+  selection-background-color: #999999
+  change-cursor-image: false
+  cursor-visible: false
+  editable: false
+  draggable: true
+  selectable: false
+  focusable: false
+
+ConsolePhantomLabel < UILabel
+  font: verdana-11px-antialised
+  height: 14
+  color: yellow
+  text-wrap: true
+  text-auto-resize: true
+  selection-color: #111416
+  selection-background-color: #999999
+
+ConsoleTabBar < MoveableTabBar
+  height: 14
+  padding: 0 5
+  border-width-top: 0
+  margin-top:3
+
+ConsoleTabBarPanel < MoveableTabBarPanel
+  id: consoleTab
+
+  ScrollablePanel
+    id: consoleBuffer
+    anchors.fill: parent
+    margin-right: 12
+    vertical-scrollbar: consoleScrollBar
+    layout:
+      type: verticalBox
+      align-bottom: true
+    inverted-scroll: true
+    image-border: 7
+    padding: 6
+    padding-bottom: 2
+    padding-left: 2
+
+  VerticalScrollBar
+    id: consoleScrollBar
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    margin-top: 3
+    margin-right: 3
+    margin-bottom: 3
+    step: 14
+    pixels-scroll: true
+
+ConsoleIconButton < UIButton
+  image-source: /images/ui/console
+  size: 16 16
+
+ConsoleTabBarButton < UIButton
+  size: 20 20
+  font: verdana-11px-rounded
+  image-source: /images/ui/chat_channel_deselected
+  image-border: 2
+  anchors.top: parent.top
+  anchors.left: parent.left
+  anchors.bottom: parent.bottom
+  color: #7F7F7F
+  text-offset: 0 4
+  margin-bottom: 0
+  &tabWidth: 96
+  
+  $checked:
+    color: #FFFFFF
+    image-source: /images/ui/chat_channel_selected
+    margin-bottom: -2
+
+  $on !checked:
+    color: #de6f6f
+
+ConsolePanel < Panel
+  id: consolePanel
+  anchors.fill: parent
+
+  Panel
+    id: parentPanel
+    image-source: /images/ui/console
+    image-clip: 184 0 166 150
+    image-border: 3
+    anchors.top: next.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-top: 1
+    padding: 3
+
+    CheckBox
+      id: toggleChat
+      !tooltip: tr('Disable chat mode, allow to walk using ASDW')
+      anchors.right: parent.right
+      anchors.bottom: parent.bottom
+      margin-bottom: 3
+      @onCheckChange: toggleChat()
+
+    TextEdit
+      id: consoleTextEdit
+      anchors.top: next.top
+      anchors.left: next.right
+      anchors.right: prev.left
+      anchors.bottom: parent.bottom
+      margin-left: 3
+      margin-right: 4
+      shift-navigation: true
+      max-length: 255
+      text-auto-submit: true
+
+    ConsoleIconButton
+      id: sayModeButton
+      icon: /images/game/console/say
+      !tooltip: tr('Adjust volume')
+      &sayMode: 2
+      size: 16 16
+      anchors.left: parent.left
+      anchors.bottom: parent.bottom
+      margin-left: 2
+      margin-bottom: 1
+      @onClick: sayModeChange()
+
+    Panel
+      id: consoleContentPanel
+      image-source: /images/ui/console
+      image-clip: 0 50 184 124
+      image-border: 4
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.bottom: consoleTextEdit.top
+      margin-bottom: 3
+      margin-left: 1
+      margin-top: 2
+      focusable: false
+
+  ConsoleTabBar
+    id: consoleTabBar
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    height: 16
+    padding: 0 16
+    movable: true
+
+  ConsoleIconButton
+    id: ignoreButton
+    image-clip: 48 0 16 16
+    anchors.right: consoleTabBar.right
+    anchors.bottom: consoleTabBar.bottom
+    @onClick: onClickIgnoreButton()
+    !tooltip: tr('Ignore and unignore other players (CTRL+I)')
+
+    $pressed:
+      image-clip: 48 16 16 16
+
+  ConsoleIconButton
+    id: channelsButton
+    image-clip: 16 0 16 16
+    anchors.right: prev.left
+    anchors.bottom: prev.bottom
+    margin-right: 1
+    @onClick: g_game.requestChannels()
+    !tooltip: tr('Open new channel (CTRL+O)')
+
+    $pressed:
+      image-clip: 16 16 16 16
+
+  ConsoleIconButton
+    id: closeChannelButton
+    image-clip: 160 0 16 16
+    anchors.right: prev.left
+    anchors.bottom: prev.bottom
+    margin-right: 1
+    visible: false
+    @onClick: removeCurrentTab()
+    !tooltip: tr('Close this channel (CTRL+E)')
+
+    $pressed:
+      image-clip: 160 16 16 16

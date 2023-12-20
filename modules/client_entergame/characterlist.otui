@@ -1,0 +1,139 @@
+CharacterWidget < UIWidget
+  height: 14
+  background-color: alpha
+  &updateOnStates: |
+    function(self)
+      local children = self:getChildren()
+      for i=1,#children do
+        children[i]:setOn(self:isFocused())
+      end
+    end
+  @onFocusChange: self:updateOnStates()
+  @onSetup: self:updateOnStates()
+
+  $focus:
+    background-color: #ffffff22
+
+  Label
+    id: name
+    color: #bbbbbb
+    anchors.top: parent.top
+    anchors.left: parent.left
+    font: verdana-11px-antialised
+    text-auto-resize: true
+    background-color: alpha
+    text-offset: 2 0
+
+    $on:
+      color: #ffffff
+
+MainWindow
+  id: charactersWindow
+  !text: tr('Select Character')
+  visible: false
+  size: 236 294
+  $mobile:
+    size: 350 280
+  @onEnter: CharacterList.doLogin()
+  @onEscape: CharacterList.hide(true)
+  @onSetup: |
+    g_keyboard.bindKeyPress('Up', function() self:getChildById('characters'):focusPreviousChild(KeyboardFocusReason) end, self)
+    g_keyboard.bindKeyPress('Down', function() self:getChildById('characters'):focusNextChild(KeyboardFocusReason) end, self)  
+
+  Label
+    text: Select character:
+    anchors.left: parent.left
+    anchors.top: parent.top
+    text-auto-resize: true
+
+  TextList
+    id: characters
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 146
+    focusable: false
+    vertical-scrollbar: characterListScrollBar
+    auto-focus: first
+    margin-top: 2
+
+  VerticalScrollBar
+    id: characterListScrollBar
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.right: prev.right
+    step: 14
+    margin-top: 1
+    margin-right: 1
+    margin-bottom: 1
+    pixels-scroll: true
+
+  Label
+    id: accountStatusCaption
+    !text: tr('Account Status') .. ':'
+    anchors.left: parent.left
+    anchors.top: characters.bottom
+    margin-top: 10
+
+  Label
+    id: accountStatusLabel
+    !text: tr('Free Account')
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 1
+    text-auto-resize: true
+
+    $on:
+      color: #FF0000
+
+  HorizontalSeparator
+    id: separator
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 9
+
+  Button
+    id: autoReconnect
+    width: 100
+    size: 100 20
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    image-source: /images/ui/longbutton
+    image-clip: 0 0 86 20
+    image-border: 3
+    
+    $!on:
+      image-color: #FF5252
+      !text: tr('Auto reconnect: Off')
+
+    $on:
+      !text: tr('Auto reconnect: On')
+      image-color: #52FF52
+      image-clip: 0 20 86 20
+      text-offset: 1 1
+
+    $hover !disabled:
+      image-clip: 0 0 86 20
+
+    $pressed:
+      image-clip: 0 20 86 20
+      text-offset: 1 1
+
+    $checked:
+      image-clip: 0 20 86 20
+
+  EnterGameButton
+    id: buttonOk
+    !text: tr('Ok')
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    margin-right: 10
+    @onClick: CharacterList.doLogin()
+
+  EnterGameButton
+    id: buttonCancel
+    !text: tr('Cancel')
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: CharacterList.hide(true)

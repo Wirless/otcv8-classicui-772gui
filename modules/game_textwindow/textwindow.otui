@@ -1,0 +1,62 @@
+TextWindow < MainWindow
+  id: textWindow
+  size: 300 280
+
+  Item
+    id: textItem
+    virtual: true
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: 
+    margin-top: -4
+
+  Label
+    id: description
+    anchors.top: parent.top
+    anchors.left: textItem.right
+    anchors.right: parent.right
+    margin-left: 8
+    text-auto-resize: true
+    text-align: left
+    text-wrap: true
+
+  MultilineTextEdit
+    margin-top: 15
+    id: text
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 140
+    vertical-scrollbar: textScroll
+    text-wrap: true
+
+  VerticalScrollBar
+    id: textScroll
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.right: parent.right
+    margin-right: 1
+    margin-top: 1
+    margin-bottom: 1
+    step: 16
+    pixels-scroll: true
+  
+  HorizontalSeparator
+    anchors.bottom: okButton.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 20
+    margin-bottom: 9
+
+  Button
+    id: okButton
+    !text: tr('Ok')
+    anchors.bottom: parent.bottom
+    anchors.right: next.left
+    margin-right: 10
+
+  Button
+    id: cancelButton
+    !text: tr('Cancel')
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right

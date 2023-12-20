@@ -1,0 +1,137 @@
+InfoWindow < MainWindow
+  text: Info
+  size: 260 240
+
+  FlatPanel
+    anchors.fill: parent
+    anchors.bottom: next.top
+    margin: 5
+    margin-bottom: 25
+
+    Label
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+      text-auto-resize: true
+      text-align: center
+      margin-top: 8
+      !text: tr('OTCv8\n3.1 rev 225\nClassic UI')
+      opacity: 0.7
+
+    HorizontalSeparator
+      id: separator
+      anchors.left: parent.left
+      anchors.right: parent.right
+      anchors.top: prev.bottom
+      margin-top: 10
+      margin-left: 10
+      margin-right: 10
+    
+    Label
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      text-auto-resize: true
+      margin-top: 15
+      text: Official Website
+      opacity: 0.7
+    
+    Button
+      anchors.verticalCenter: prev.verticalCenter
+      anchors.left: prev.right
+      anchors.right: separator.right
+      margin-left: 10
+      text: www.tibia.com
+      @onClick: g_platform.openUrl("https://github.com/tysonstrange/otcv8-classicui")
+
+  HorizontalSeparator
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: next.top
+    margin-bottom: 8
+  
+  Button
+    !text: tr('Ok')
+    width: 44
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    @onClick: self:getParent():hide()
+
+MenuButton < Button
+  anchors.top: parent.top
+  anchors.horizontalCenter: parent.horizontalCenter
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-right: 15
+  margin-left: 15
+  height: 20
+  image-source: /images/ui/longbutton
+  image-clip: 0 0 86 20
+  image-border: 3
+  font: cipsoftFont
+
+  $hover !disabled:
+    image-clip: 0 0 86 20
+
+  $pressed:
+    image-clip: 0 20 86 20
+    text-offset: 1 1
+
+UIWidget
+  id: background
+  anchors.fill: parent
+  focusable: false
+  image-source: /images/background
+  image-smooth: true
+  margin-top: 1
+
+  UIWidget
+    id: menu
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    size: 117 171
+    margin-left: 60
+    margin-bottom: 70
+    image-source: /images/game/gamemenu
+
+    MenuButton
+      text: Enter Game
+      margin-top: 15
+      @onClick: EnterGame.show()
+
+    MenuButton
+      text: Access Account
+      anchors.top: prev.bottom
+      margin-top: 10
+      @onClick: g_platform.openUrl("https://github.com/tysonstrange/otcv8-classicui")
+
+    MenuButton
+      text: Options
+      anchors.top: prev.bottom
+      margin-top: 10
+      @onClick: modules.client_options.toggle()
+
+    MenuButton
+      text: Info
+      anchors.top: prev.bottom
+      margin-top: 10
+      @onClick: modules.client_background.showInfoWindow()
+
+    MenuButton
+      text: Exit Game
+      anchors.top: prev.bottom
+      margin-top: 10
+      @onClick: exit()
+
+  UILabel
+    id: clientVersionLabel
+    background-color: #00000099
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    text-align: center
+    text-auto-resize: false
+    width: 220
+    height: 90
+    padding: 2
+    color: #ffffff
+    font: terminus-14px-bold
+    visible: false

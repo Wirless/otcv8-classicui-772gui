@@ -1,0 +1,97 @@
+ScrollBarSlider < UIButton
+  id: sliderButton
+  anchors.centerIn: parent
+  image-source: /images/ui/scrollbar
+  image-border: 6
+  opacity: 1
+  
+  $disabled:
+    opacity: 0
+
+ScrollBarValueLabel < Label
+  id: valueLabel
+  anchors.fill: parent
+  color: white
+  text-align: center
+
+VerticalScrollBarSlider < ScrollBarSlider
+  size: 12 12
+  minimum: 12
+  image-clip: 0 24 12 14
+
+VerticalScrollBar < UIScrollBar
+  orientation: vertical
+  width: 12
+  height: 39
+  image-source: /images/ui/scrollbar
+  image-clip: 24 0 12 74
+  image-border: 1
+  pixels-scroll: true
+
+  UIButton
+    id: decrementButton
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-source: /images/ui/scrollbar
+    size: 12 12
+    image-clip: 0 0 12 12
+    $pressed:
+      image-clip: 12 0 12 12
+
+  UIButton
+    id: incrementButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    size: 12 12
+    image-source: /images/ui/scrollbar
+    image-clip: 0 12 12 12
+    $pressed:
+      image-clip: 12 12 12 12
+
+  VerticalScrollBarSlider
+
+  ScrollBarValueLabel
+
+HorizontalScrollBarSlider < ScrollBarSlider
+  size: 12 12
+  minimum: 12
+  image-clip: 12 26 12 12
+  image-border-top: 3
+  image-border-bottom: 3
+  image-border-left: 5
+  image-border-right: 6
+
+HorizontalScrollBar < UIScrollBar
+  orientation: horizontal
+  height: 12
+  width: 39
+  image-source: /images/ui/scrollbar
+  image-clip: 0 38 24 12
+  image-border: 1
+
+  $disabled:
+    color: #bbbbbb88
+
+  UIButton
+    id: decrementButton
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 12 12
+    image-source: /images/ui/scrollbar
+    image-clip: 0 50 12 12
+    $pressed:
+      image-clip: 0 62 12 12
+
+  UIButton
+    id: incrementButton
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    size: 12 12
+    image-source: /images/ui/scrollbar
+    image-clip: 12 50 12 12
+    $pressed:
+      image-clip: 12 62 12 12
+
+  HorizontalScrollBarSlider
+
+  ScrollBarValueLabel

@@ -1,0 +1,79 @@
+OptionPanel
+  Label
+    text-wrap: true
+    visible: false
+    @onSetup: |
+      self:setText(tr("GPU: ") .. g_graphics.getRenderer())      
+
+  Label
+    text-wrap: false
+    visible: false
+    @onSetup: |
+      self:setText(tr("Version: ") .. g_graphics.getVersion())      
+
+  HorizontalSeparator
+    id: separator
+    visible: false
+    margin: 5 5 5 5
+
+  OptionCheckBox
+    id: vsync
+    !text: tr('Enable VSync')
+    !tooltip: tr('Limits FPS (usually to 60)')
+
+  OptionCheckBox
+    id: showFps
+    !text: tr('Show FPS')
+
+  OptionCheckBox
+    id: fullscreen
+    !text: tr('Fullscreen')
+    tooltip: Ctrl+Shift+F
+
+  OptionCheckBox
+    id: antialiasing
+    !text: tr('Antialiasing')
+
+  Label
+    margin-top: 12
+    id: optimizationLevelLabel
+    !text: tr("Optimization level")
+    visible: false
+    
+  ComboBox
+    id: optimizationLevel
+    margin-top: 3
+    visible: false
+    margin-right: 2
+    margin-left: 2
+    @onOptionChange: modules.client_options.setOption(self:getId(), self.currentIndex)
+    @onSetup: |
+      self:addOption("Automatic")
+      self:addOption("None")
+      self:addOption("Low")
+      self:addOption("Medium")
+      self:addOption("High")
+      self:addOption("Maximum")
+      
+  Label
+    !text: tr('High/Maximum optimization level may cause visual defects.')
+    margin-top: 5
+    visible: false
+
+  Label
+    id: backgroundFrameRateLabel
+    !text: tr('Game framerate limit: %s', 'max')
+    margin-top: 12
+    @onSetup: |
+      local value = modules.client_options.getOption('backgroundFrameRate')
+      local text = value
+      if value <= 0 or value >= 200 then
+        text = '200'
+      end
+      self:setText(tr('Adjust framerate limit: %s', text))
+
+  OptionScrollbar
+    id: backgroundFrameRate
+    margin-top: 3
+    minimum: 10
+    maximum: 200

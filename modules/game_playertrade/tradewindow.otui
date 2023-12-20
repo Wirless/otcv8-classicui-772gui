@@ -1,0 +1,149 @@
+TradeWindow < MiniWindow
+  !text: tr('Trade')
+  height: 95
+
+  UIItem
+    id: tradeItem
+    virtual: true
+    icon: /images/ui/trade
+    icon-rect: 0 0 15 15
+    size: 15 15
+    anchors.top: parent.top
+    anchors.left: parent.left
+    margin-top: 1
+    margin-left: 3
+
+  MiniWindowContents
+    margin-top: 12
+    padding: 2
+    
+    Label
+      id: ownTradeLabel
+      anchors.top: parent.top
+      anchors.left: parent.left
+      anchors.right: parent.horizontalCenter
+      font: verdana-9px-bold
+      color: #bfbfbf
+      text-align: left
+
+    Label
+      id: counterTradeLabel
+      anchors.top: parent.top
+      anchors.left: parent.horizontalCenter
+      anchors.right: parent.right
+      font: verdana-9px-bold
+      color: #bfbfbf
+      text-align: right
+    
+    HorizontalSeparator
+      id: topTradeContainerSeparator
+      anchors.top: prev.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+
+    ScrollableFlatPanel
+      id: ownTradeContainer
+      anchors.top: topTradeContainerSeparator.bottom
+      anchors.bottom: bottomTradeContainerSeparator.top
+      anchors.left: parent.left
+      anchors.right: parent.horizontalCenter
+      padding: 2
+      image-clip: 1 1 1 1
+      layout:
+        type: grid
+        cell-size: 34 34
+        flow: true
+        cell-spacing: 1
+      vertical-scrollbar: ownTradeScrollBar
+
+    VerticalScrollBar
+      id: ownTradeScrollBar
+      anchors.top: ownTradeContainer.top
+      anchors.bottom: ownTradeContainer.bottom
+      anchors.right: ownTradeContainer.right
+      step: 14
+      margin-top: 1
+      pixels-scroll: true
+      $!on:
+        width: 0
+
+    VerticalSeparator
+      id: centerTradeContainerSeparator
+      anchors.top: topTradeContainerSeparator.top
+      anchors.bottom: bottomTradeContainerSeparator.bottom
+      anchors.left: parent.horizontalCenter
+      anchors.right: parent.horizontalCenter
+
+    ScrollableFlatPanel
+      id: counterTradeContainer
+      anchors.top: topTradeContainerSeparator.bottom
+      anchors.bottom: bottomTradeContainerSeparator.top
+      anchors.left: parent.horizontalCenter
+      anchors.right: parent.right
+      padding: 2
+      image-clip: 1 1 1 1
+      layout:
+        type: grid
+        cell-size: 34 34
+        flow: true
+        cell-spacing: 1
+      vertical-scrollbar: counterTradeScrollBar
+
+    VerticalScrollBar
+      id: counterTradeScrollBar
+      anchors.top: counterTradeContainer.top
+      anchors.bottom: counterTradeContainer.bottom
+      anchors.right: counterTradeContainer.right
+      step: 14
+      pixels-scroll: true
+      $!on:
+        width: 0
+
+    HorizontalSeparator
+      id: bottomTradeContainerSeparator
+      anchors.bottom: acceptButton.top
+      anchors.left: parent.left
+      anchors.right: parent.right
+
+    Button
+      !text: tr('Cancel')
+      id: rejectButton
+      width: 43
+      height: 20
+      anchors.bottom: parent.bottom
+      anchors.right: parent.right
+      margin-right: 2
+      @onClick: g_game.rejectTrade()
+
+    Button
+      !text: tr('Accept')
+      id: acceptButton
+      width: 43
+      height: 20
+      anchors.bottom: parent.bottom
+      anchors.right: prev.left 
+      visible: false
+      margin-right: 4
+      @onClick: g_game.acceptTrade(); self:disable()
+
+    Label
+      !text: tr('Please wait for a\ncounteroffer')
+      id: waitForCounter
+      margin-top: 1
+      anchors.top: bottomTradeContainerSeparator.bottom
+      anchors.bottom: parent.bottom
+      anchors.right: rejectButton.left 
+      anchors.left: parent.left 
+      visible: true
+      font: verdana-9px-bold
+      color: #bfbfbf
+      text-align: center
+
+  UIWidget
+    id: miniborder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    image-source: /images/ui/miniborder
+    size: 14 14
+    margin-left: 2
+    margin-bottom: 2

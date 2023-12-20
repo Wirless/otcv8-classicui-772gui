@@ -1,0 +1,103 @@
+EnterGameLabel < Label
+  text: Test
+  text-auto-resize: true
+  font: verdana-11px-antialised
+
+EnterGameButton < Button
+  size: 43 20
+
+MainWindow
+  id: enterGame
+  !text: tr('Enter Game')
+  size: 244 205
+  @onEnter: EnterGame.doLogin()
+
+  EnterGameLabel
+    text: Account number:
+    anchors.top: parent.top
+    anchors.left: parent.left
+
+  PasswordTextEdit
+    id: accountNameTextEdit
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.top: prev.top
+    margin-left: 10
+    margin-right: 5
+
+  EnterGameLabel
+    !text: tr('Password:')
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 15
+
+  PasswordTextEdit
+    id: accountPasswordTextEdit
+    anchors.left: accountNameTextEdit.left
+    anchors.right: parent.right
+    anchors.top: prev.top
+    margin-right: 5
+
+  FlatPanel
+    height: 22
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    margin-top: 15
+    margin-right: 5
+
+  CheckBox
+    id: rememberPasswordBox
+    !text: tr('Remember password')
+    !tooltip: tr('Remember account and password when starts client')
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.top
+    margin: 5
+
+  EnterGameLabel
+    !text: tr('Server:')
+    anchors.left: parent.left
+    anchors.top: prev.bottom
+    margin-top: 25
+
+  ComboBox
+    id: serverComboBox
+    anchors.left: prev.right
+    anchors.top: prev.top
+    anchors.right: parent.right
+    margin-left: 10
+    margin-top: -3
+    @onOptionChange: EnterGame.onServerChange()
+    @onSetup: |
+      for _, server in ipairs(SERVER_LIST) do
+        self:addOption(server.name or server.host, server)
+      end
+
+  HorizontalSeparator
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    margin-top: 9
+
+  EnterGameButton
+    !text: tr('Cancel')
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: EnterGame.hide()
+
+  EnterGameButton
+    !text: tr('Ok')
+    anchors.right: prev.left
+    anchors.top: prev.top
+    @onClick: EnterGame.doLogin()
+    margin-right: 10
+
+  Label
+    id: serverInfoLabel
+    font: verdana-11px-rounded
+    anchors.top: prev.top
+    anchors.left: parent.left
+    margin-top: 5
+    color: green
+    text-auto-resize: true
